@@ -1,14 +1,25 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
+import axios from "axios";
 
 const LoginForm: React.FC = () => {
-  //   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //     event.preventDefault();
-  //     // Handle form submission logic here
-  //   };
+  const [email, setEmail] = useState("");
+  const [name, setName] = useState("");
 
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("/api/submitForm", {
+        // setEmail = email;
+      });
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+  };
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <form className="max-w-sm mx-auto">
+      <form className="max-w-sm mx-auto" onSubmit={handleSubmit}>
         <div className="mb-5">
           <label
             htmlFor="email"
@@ -20,7 +31,7 @@ const LoginForm: React.FC = () => {
             type="email"
             id="email"
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="name@flowbite.com"
+            placeholder="name@gmail.com"
             required
           />
         </div>

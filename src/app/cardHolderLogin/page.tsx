@@ -1,21 +1,32 @@
 "use client";
 import React, { useState } from "react";
 import axios from "axios";
+import { useRouter } from 'next/navigation'
 
-const LoginForm: React.FC = () => {
-  const [email, setEmail] = useState("");
-  const [name, setName] = useState("");
+
+const cardHolderRegistrationForm: React.FC = () => {
+  const {push} = useRouter(); 
+  const[ formData, setFormData ] = useState({
+    name: "",
+    email: ""
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
+    const {name, value} = e.target;
+    console.log(value);
+    setFormData({ ...formData, [name]: value });
+  }
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     try {
-      const response = await axios.post("/api/submitForm", {
-        // setEmail = email;
-      });
+      const response = await axios.post("http://localhost:4000/auth/userlogin", formData);
       console.log(response.data);
+      push("/validateRation");
     } catch (error) {
       console.error("Error submitting form:", error);
     }
+
   };
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -28,8 +39,11 @@ const LoginForm: React.FC = () => {
             Card holder's email
           </label>
           <input
+            onChange={handleChange}
             type="email"
             id="email"
+            name="email"
+            value={formData.email}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             placeholder="name@gmail.com"
             required
@@ -43,8 +57,11 @@ const LoginForm: React.FC = () => {
             Card holder's name
           </label>
           <input
+            onChange={handleChange}
             type="name"
             id="name"
+            name="name"
+            value={formData.name}
             className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
             required
           />
@@ -60,4 +77,4 @@ const LoginForm: React.FC = () => {
   );
 };
 
-export default LoginForm;
+export default cardHolderRegistrationForm;

@@ -8,7 +8,8 @@ const cardHolderRegistrationForm: React.FC = () => {
   const {push} = useRouter(); 
   const[ formData, setFormData ] = useState({
     name: "",
-    email: ""
+    rationNumber: "",
+    phoneNumber: ""
   })
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
@@ -22,37 +23,38 @@ const cardHolderRegistrationForm: React.FC = () => {
     try {
       const response = await axios.post("http://localhost:4000/auth/userlogin", formData);
       console.log(response.data);
-      push("/validateRation");
+      push("/fetchAllMembers");
     } catch (error) {
       console.error("Error submitting form:", error);
     }
 
   };
   return (
-    <div className="min-h-screen flex items-center justify-center">
+    <div className="min-h-screen flex flex-col items-center justify-center ">
+      <h1 className="text-4xl font-bold mb-12">Card Holder Login</h1>
       <form className="max-w-sm mx-auto" onSubmit={handleSubmit}>
         <div className="mb-5">
           <label
-            htmlFor="email"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            htmlFor="rationNumber"
+            className="block mb-2 text-sm font-medium text-gray-900  "
           >
-            Card holder's email
+            Ration Number
           </label>
           <input
             onChange={handleChange}
-            type="email"
-            id="email"
-            name="email"
-            value={formData.email}
-            className=" border border-gray-300 text-gray-900 text-sm rounded-lg  ring-blue-500  border-blue-500 block w-full p-2.5 border-blue-500"
-            placeholder="name@gmail.com"
+            type="text"
+            id="rationNumber"
+            name="rationNumber"
+            value={formData.rationNumber}
+            className=" border border-gray-300 text-gray-900 text-sm rounded-lg     block w-full p-2.5 "
+            placeholder="Enter Your Ration Number"
             required
           />
         </div>
         <div className="mb-5">
           <label
             htmlFor="name"
-            className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
+            className="block mb-2 text-sm font-medium text-gray-900  "
           >
             Card holder's name
           </label>
@@ -62,13 +64,33 @@ const cardHolderRegistrationForm: React.FC = () => {
             id="name"
             name="name"
             value={formData.name}
-            className=" border border-gray-300 text-gray-900 text-sm rounded-lg  ring-blue-500  border-blue-500 block w-full p-2.5 border-blue-500"
+            className=" border border-gray-300 text-gray-900 text-sm rounded-lg  ring-blue-500   block w-full p-2.5 "
+            placeholder="Enter Your Name"
             required
           />
         </div>
+	<div>
+          <label
+            htmlFor="phoneNumber"
+            className="block mb-2 text-sm font-medium text-gray-900 "
+          >
+            Card holder's Phone Number
+          </label>
+          <input
+            onChange={handleChange}
+            type="text"
+            id="phoneNumber"
+            name="phoneNumber"
+            value={formData.phoneNumber}
+            className=" border  text-gray-900 text-sm rounded-lg  ring-blue-500   block w-full p-2.5 border-blue-500"
+            placeholder="Enter Your Phone Number"
+            required
+          />
+
+	</div>
         <button
           type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+          className="text-white bg-black outline-none font-medium rounded-lg text-sm w-full px-5 py-2.5 mt-10 text-center"
         >
           Submit
         </button>

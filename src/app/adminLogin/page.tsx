@@ -1,46 +1,75 @@
-import React from "react";
+"use client";
+import React, { useState } from "react";
+import axios from "axios";
+import { useRouter } from 'next/navigation'
 
-const LoginForm: React.FC = () => {
-  //   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
-  //     event.preventDefault();
-  //     // Handle form submission logic here
-  //   };
 
+const adminLoginForm: React.FC = () => {
+  const {push} = useRouter(); 
+  const[ formData, setFormData ] = useState({
+    name: "",
+    email: ""
+  })
+
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) =>{
+    const {name, value} = e.target;
+    console.log(value);
+    setFormData({ ...formData, [name]: value });
+  }
+
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    try {
+      const response = await axios.post("http://localhost:4000/auth/distlogin", formData);
+      console.log(response.data);
+    } catch (error) {
+      console.error("Error submitting form:", error);
+    }
+
+  };
   return (
-    <div className="min-h-screen flex items-center justify-center">
-      <form className="max-w-sm mx-auto">
+    <div className="min-h-screen flex flex-col items-center justify-center ">
+      <h1 className="text-4xl font-bold mb-12">Distributor Login</h1>
+      <form className="max-w-sm mx-auto" onSubmit={handleSubmit}>
         <div className="mb-5">
           <label
-            htmlFor="email"
-            className="block mb-2 text-sm font-medium text-gray-900  text-white"
+            htmlFor="rationNumber"
+            className="block mb-2 text-sm font-medium text-gray-900  "
           >
-            Admin email
+             Distributor's Email 
           </label>
           <input
+            onChange={handleChange}
             type="email"
             id="email"
-            className=" border border-gray-300 text-gray-900 text-sm rounded-lg  ring-blue-500  border-blue-500 block w-full p-2.5 border-blue-500"
-            placeholder="name@gmail.com"
+            name="email"
+            value={formData.email}
+            className=" border border-gray-300 text-gray-900 text-sm rounded-lg     block w-full p-2.5 "
+            placeholder="Enter Your Ration Number"
             required
           />
         </div>
         <div className="mb-5">
           <label
             htmlFor="name"
-            className="block mb-2 text-sm font-medium text-gray-900  text-white"
+            className="block mb-2 text-sm font-medium text-gray-900  "
           >
-            Admin name
+	  Distributor's Name
           </label>
           <input
+            onChange={handleChange}
             type="name"
             id="name"
-            className=" border border-gray-300 text-gray-900 text-sm rounded-lg  ring-blue-500  border-blue-500 block w-full p-2.5 border-blue-500"
+            name="name"
+            value={formData.name}
+            className=" border border-gray-300 text-gray-900 text-sm rounded-lg  ring-blue-500   block w-full p-2.5 "
+            placeholder="Enter Your Name"
             required
           />
         </div>
         <button
           type="submit"
-          className="text-white bg-blue-700 hover:bg-blue-800  ring-4  outline-none  ring-blue-300 font-medium rounded-lg text-sm w-full sm:w-auto px-5 py-2.5 text-center  bg-blue-600  hover:bg-blue-700   ring-blue-800"
+          className="text-white bg-black outline-none font-medium rounded-lg text-sm w-full px-5 py-2.5 mt-10 text-center"
         >
           Submit
         </button>
@@ -49,4 +78,4 @@ const LoginForm: React.FC = () => {
   );
 };
 
-export default LoginForm;
+export default adminLoginForm;
